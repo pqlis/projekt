@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Komiksowa</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff5f5;
+      color: #300;
+    }
+    header {
+      background-color: #b30000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #ff4d4d;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav li {
+      margin: 0;
+    }
+    nav a {
+      display: block;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: white;
+    }
+    nav a:hover {
+      background-color: #e60000;
+    }
+    main {
+      padding: 20px;
+    }
+    footer {
+      background-color: #b30000;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+    img[usemap] {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  max-width: 768px;
+}
+    .tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.9em;
+      display: none;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .info {
+      text-align: center;
+      font-size: 1.1em;
+      margin: 40px auto;
+      background-color: #ffe5e5;
+      padding: 10px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Mapa Bazy Bohaterów</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Strona Główna</a></li>
+      <li><a href="o-komiksach.html">O Komiksach</a></li>
+      <li><a href="gatunki.html">Gatunki</a></li>
+      <li><a href="autorzy.html">Autorzy</a></li>
+      <li><a href="serie.html">Serie</a></li>
+      <li><a href="interaktywna-mapa.html">Mapa</a></li>
+      <li><a href="formularz.html">Formularz</a></li>
+      <li><a href="konwerter.html">Przelicznik</a></li>
+      <li><a href="prezentacja.html">Prezentacja</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+      <li><a href="zegar.html">Zegar</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Interaktywna Mapa Komiksowa</h2>
+    <p>Kliknij na pokój, aby poznać jego zastosowanie:</p>
+    <div style="position: relative;">
+      <img src="images/plan-bazy-superbohaterow.jpg" alt="Plan Bazy Superbohaterów" usemap="#komiksmap" id="mapa-obraz">
+      <div id="tooltip" class="tooltip"></div>
+    </div>
+
+    <map name="komiksmap">
+  <area shape="rect" coords="50,50,300,220" alt="Sala Taktyczna" onclick="showInfo('Sala Taktyczna: centrum dowodzenia.')" style="cursor: pointer;">
+  <area shape="rect" coords="320,50,570,220" alt="Treningowa" onclick="showInfo('Treningowa: ćwiczenia i symulacje.')" style="cursor: pointer;">
+  <area shape="rect" coords="320,240,570,370" alt="Laboratorium" onclick="showInfo('Laboratorium: eksperymenty i badania.')" style="cursor: pointer;">
+  <area shape="rect" coords="50,240,300,370" alt="Garaż" onclick="showInfo('Garaż: pojazdy i sprzęt.')" style="cursor: pointer;">
+  <area shape="rect" coords="50,390,300,660" alt="Garaż 2" onclick="showInfo('Garaż (dolny): duży hangar na pojazdy.')" style="cursor: pointer;">
+  <area shape="rect" coords="320,390,570,520" alt="Archiwum" onclick="showInfo('Archiwum: dokumentacja i dane.')" style="cursor: pointer;">
+</map>
+  </section>
+
+  <section class="info">
+    <p>Zegar: <span id="zegar"></span></p>
+    <p>Data: <span id="data"></span></p>
+    <p>Liczba odwiedzin: <span id="licznik"></span></p>
+    <p>Czas spędzony na stronie: <span id="czasNaStronie"></span></p>
+  </section>
+<div id="infoBox" style="display:none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; border: 2px solid #b30000; padding: 15px; font-size: 1em; color: #300; z-index: 1000; max-width: 90%; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"></div>
+</main>
+
+<footer>
+  <p>Autor: Piotr Kulis</p>
+  <p>Projekt strony internetowej wykonany w ramach zaliczenia przedmiotu MO: TIiSKwE na kierunku Energetyka.</p>
+</footer>
+
+<script>
+  const tooltip = document.getElementById('tooltip');
+  document.querySelectorAll('area').forEach(area => {
+    area.addEventListener('mousemove', e => {
+      tooltip.style.display = 'block';
+      tooltip.style.left = e.pageX + 10 + 'px';
+      tooltip.style.top = e.pageY + 10 + 'px';
+      tooltip.textContent = area.dataset.tooltip;
+    });
+    area.addEventListener('mouseleave', () => {
+      tooltip.style.display = 'none';
+    });
+  });
+
+  setInterval(() => {
+    const teraz = new Date();
+    document.getElementById("zegar").textContent = `${String(teraz.getHours()).padStart(2, '0')}:${String(teraz.getMinutes()).padStart(2, '0')}:${String(teraz.getSeconds()).padStart(2, '0')}`;
+  }, 1000);
+
+  document.getElementById("data").textContent = new Date().toLocaleDateString();
+
+  if (!sessionStorage.getItem("visited")) {
+    let licznik = localStorage.getItem("licznik") || 0;
+    licznik = parseInt(licznik) + 1;
+    localStorage.setItem("licznik", licznik);
+    sessionStorage.setItem("visited", "true");
+  }
+  document.getElementById("licznik").textContent = localStorage.getItem("licznik");
+
+  let czasStart = sessionStorage.getItem("czasStart");
+  if (!czasStart) {
+    czasStart = Date.now();
+    sessionStorage.setItem("czasStart", czasStart);
+  }
+  setInterval(() => {
+    const elapsed = Date.now() - sessionStorage.getItem("czasStart");
+    document.getElementById("czasNaStronie").textContent = Math.floor(elapsed / 1000) + " sekundy";
+  }, 1000);
+
+  function przeskalujMape() {
+    const mapa = document.getElementById('mapa-obraz');
+    const oryginalnaSzerokosc = mapa.naturalWidth;
+    const oryginalnaWysokosc = mapa.naturalHeight;
+
+    const aktualnaSzerokosc = mapa.clientWidth;
+    const aktualnaWysokosc = mapa.clientHeight;
+
+    const skalaX = aktualnaSzerokosc / oryginalnaSzerokosc;
+    const skalaY = aktualnaWysokosc / oryginalnaWysokosc;
+
+    document.querySelectorAll('area').forEach(area => {
+      const original = area.dataset.originalCoords;
+      if (!original) return;
+      const oryginalne = original.split(',').map(Number);
+      const przeskalowane = oryginalne.map((val, i) => i % 2 === 0 ? Math.round(val * skalaX) : Math.round(val * skalaY));
+      area.coords = przeskalowane.join(',');
+    });
+  }
+
+  document.querySelectorAll('area').forEach(area => {
+    const original = area.dataset.originalCoords;
+    if (original) {
+      area.coords = original;
+    }
+  });
+
+  const obraz = document.getElementById('mapa-obraz');
+if (obraz.complete) {
+  przeskalujMape();
+} else {
+  obraz.onload = przeskalujMape;
+}
+  window.addEventListener('resize', przeskalujMape);
+function showInfo(text) {
+  const box = document.getElementById('infoBox');
+  box.textContent = text;
+  box.style.display = 'block';
+  setTimeout(() => { box.style.display = 'none'; }, 5000);
+}
+</script>
+
+</body>
+</html>
