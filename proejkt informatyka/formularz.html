@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formularz Komiksowy</title>
+  <link rel="stylesheet" href="style/main.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff5f5;
+      color: #300;
+    }
+    header {
+      background-color: #b30000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #ff4d4d;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav li {
+      margin: 0;
+    }
+    nav a {
+      display: block;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: white;
+    }
+    nav a:hover {
+      background-color: #e60000;
+    }
+    main {
+      padding: 20px;
+    }
+
+    
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background-color: #b30000;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+    .info {
+      text-align: center;
+      font-size: 1.1em;
+      margin: 40px auto;
+      background-color: #ffe5e5;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Twoje Zainteresowania Komiksowe</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Strona Główna</a></li>
+        <li><a href="o-komiksach.html">O Komiksach</a></li>
+        <li><a href="gatunki.html">Gatunki</a></li>
+        <li><a href="autorzy.html">Autorzy</a></li>
+        <li><a href="serie.html">Serie</a></li>
+        <li><a href="interaktywna-mapa.html">Mapa</a></li>
+        <li><a href="formularz.html">Formularz</a></li>
+        <li><a href="konwerter.html">Przelicznik</a></li>
+        <li><a href="prezentacja.html">Prezentacja</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="zegar.html">Zegar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2 style="text-align: center;">Wypełnij formularz</h2>
+      <form action="mailto:twojemail@example.com" method="POST" enctype="text/plain">
+        <label>Imię: <span style="color: red;">*</span><br>
+          <input type="text" name="imie" required>
+        </label><br><br>
+
+        <label>Wiek: <span style="color: red;">*</span><br>
+          <input type="number" name="wiek" required>
+        </label><br><br>
+
+        <label>Płeć: <span style="color: red;">*</span><br>
+          <input type="radio" name="plec" value="kobieta" required> Kobieta
+          <input type="radio" name="plec" value="mezczyzna"> Mężczyzna
+          <input type="radio" name="plec" value="inna"> Inna
+        </label><br><br>
+
+        <label>Ulubione gatunki:<br>
+          <input type="checkbox" name="gatunki" value="superbohaterskie"> Superbohaterskie<br>
+          <input type="checkbox" name="gatunki" value="manga"> Manga<br>
+          <input type="checkbox" name="gatunki" value="europejskie"> Europejskie<br>
+        </label><br><br>
+
+        <label>Ulubiony autor:<br>
+          <select name="autor">
+            <option value="stan_lee">Stan Lee</option>
+            <option value="alan_moore">Alan Moore</option>
+            <option value="akira_toriyama">Akira Toriyama</option>
+            <option value="inny">inny</option>
+          </select>
+        </label><br><br>
+
+        <label>Co najbardziej lubisz w komiksach?<br>
+          <textarea name="komentarz" rows="5" cols="40"></textarea>
+        </label><br><br>
+
+        <label>Dodaj swoje zdjęcie profilowe:<br>
+          <input type="file" name="zdjecie">
+        </label><br><br>
+
+        <label>Data pierwszego przeczytanego komiksu:<br>
+          <input type="date" name="pierwszy_komiks">
+        </label><br><br>
+
+        <input type="submit" value="Wyślij">
+        <input type="reset" value="Wyczyść">
+      </form>
+    </section>
+
+    <section class="info">
+      <p>Zegar: <span id="zegar"></span></p>
+      <p>Data: <span id="data"></span></p>
+      <p>Liczba odwiedzin: <span id="licznik"></span></p>
+      <p>Czas spędzony na stronie: <span id="czasNaStronie"></span></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Autor: Piotr Kulis</p>
+    <p>Projekt strony internetowej wykonany w ramach zaliczenia przedmiotu MO: TIiSKwE na kierunku Energetyka.</p>
+  </footer>
+
+  <script>
+    setInterval(() => {
+      const teraz = new Date();
+      const godziny = String(teraz.getHours()).padStart(2, '0');
+      const minuty = String(teraz.getMinutes()).padStart(2, '0');
+      const sekundy = String(teraz.getSeconds()).padStart(2, '0');
+      document.getElementById("zegar").textContent = `${godziny}:${minuty}:${sekundy}`;
+    }, 1000);
+
+    document.getElementById("data").textContent = new Date().toLocaleDateString();
+
+    if (!sessionStorage.getItem("visited")) {
+      let licznik = localStorage.getItem("licznik") || 0;
+      licznik = parseInt(licznik) + 1;
+      localStorage.setItem("licznik", licznik);
+      sessionStorage.setItem("visited", "true");
+    }
+    document.getElementById("licznik").textContent = localStorage.getItem("licznik");
+
+    let czasStart = sessionStorage.getItem("czasStart");
+    if (!czasStart) {
+      czasStart = Date.now();
+      sessionStorage.setItem("czasStart", czasStart);
+    }
+    setInterval(() => {
+      const sekundy = Math.floor((Date.now() - sessionStorage.getItem("czasStart")) / 1000);
+      document.getElementById("czasNaStronie").textContent = sekundy + " sekundy";
+    }, 1000);
+  </script>
+</body>
+</html>

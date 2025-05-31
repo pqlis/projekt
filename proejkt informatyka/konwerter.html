@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Przelicznik Komiksowy</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff5f5;
+      color: #300;
+    }
+    header {
+      background-color: #b30000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #ff4d4d;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav li {
+      margin: 0;
+    }
+    nav a {
+      display: block;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: white;
+    }
+    nav a:hover {
+      background-color: #e60000;
+    }
+
+    main {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    form {
+      max-width: 600px;
+      width: 100%;
+      background-color: #fff;
+      padding: 20px;
+      margin: 0 auto 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    form input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #b30000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e60000;
+    }
+
+    h3, #wynik {
+      text-align: center;
+    }
+
+    .wizualizacja {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .czlowiek {
+      height: 200px;
+    }
+
+    .stos-komiksow {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+
+    .komiks-ikona {
+      width: 40px;
+      height: 20px;
+      margin: 1px 0;
+      background-color: #4caf50;
+      border-radius: 3px;
+    }
+
+    .info {
+      text-align: center;
+      font-size: 1.1em;
+      margin: 40px auto;
+      background-color: #ffe5e5;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 600px;
+    }
+
+    footer {
+      background-color: #b30000;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Przelicznik Czytania Komiksów</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Strona Główna</a></li>
+        <li><a href="o-komiksach.html">O Komiksach</a></li>
+        <li><a href="gatunki.html">Gatunki</a></li>
+        <li><a href="autorzy.html">Autorzy</a></li>
+        <li><a href="serie.html">Serie</a></li>
+        <li><a href="interaktywna-mapa.html">Mapa</a></li>
+        <li><a href="formularz.html">Formularz</a></li>
+        <li><a href="konwerter.html">Przelicznik</a></li>
+        <li><a href="prezentacja.html">Prezentacja</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="zegar.html">Zegar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Ile komiksów przeczytasz w tym roku?</h2>
+      <form id="komiksowyPrzelicznik">
+        <label>Średnia liczba stron komiksu:
+          <input type="number" id="sredniaStron" required>
+        </label>
+
+        <label>Średni czas czytania jednej strony (w minutach):
+          <input type="number" id="czasStrona" required>
+        </label>
+
+        <label>Ile dni w tygodniu czytasz komiksy?
+          <input type="number" id="dniWTygodniu" required>
+        </label>
+
+        <label>Ile minut dziennie poświęcasz na czytanie?
+          <input type="number" id="minutyDziennie" required>
+        </label>
+
+        <button type="button" onclick="obliczKomiksy()">Oblicz</button>
+      </form>
+
+      <h3>Wynik:</h3>
+      <p id="wynik">Wypełnij dane powyżej, aby zobaczyć wynik.</p>
+
+      <div class="wizualizacja">
+        <img src="images/human.png" alt="człowiek" class="czlowiek">
+        <div id="stos" class="stos-komiksow"></div>
+      </div>
+    </section>
+
+    <section class="info">
+      <p>Zegar: <span id="zegar"></span></p>
+      <p>Data: <span id="data"></span></p>
+      <p>Liczba odwiedzin: <span id="licznik"></span></p>
+      <p>Czas spędzony na stronie: <span id="czasNaStronie"></span></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Autor: Piotr Kulis</p>
+    <p>Projekt strony internetowej wykonany w ramach zaliczenia przedmiotu MO: TIiSKwE na kierunku Energetyka.</p>
+  </footer>
+
+  <script>
+    function obliczKomiksy() {
+      const strony = parseInt(document.getElementById('sredniaStron').value);
+      const czasStrona = parseInt(document.getElementById('czasStrona').value);
+      const dni = parseInt(document.getElementById('dniWTygodniu').value);
+      const minuty = parseInt(document.getElementById('minutyDziennie').value);
+
+      const minNaTydzien = dni * minuty;
+      const minNaKomiks = strony * czasStrona;
+      const komiksyNaTydzien = minNaTydzien / minNaKomiks;
+      const komiksyNaRok = Math.floor(komiksyNaTydzien * 52);
+
+      document.getElementById('wynik').textContent = `Możesz przeczytać około ${komiksyNaRok} komiksów w tym roku!`;
+
+      
+      const stosDiv = document.getElementById('stos');
+      stosDiv.innerHTML = '';
+      const ilosc = Math.min(Math.floor(komiksyNaRok / 5), 50); // 1 klocek = 5 komiksów
+
+      for (let i = 0; i < ilosc; i++) {
+        const div = document.createElement('div');
+        div.classList.add('komiks-ikona');
+        stosDiv.appendChild(div);
+      }
+    }
+
+    
+    setInterval(() => {
+      const teraz = new Date();
+      const godziny = String(teraz.getHours()).padStart(2, '0');
+      const minuty = String(teraz.getMinutes()).padStart(2, '0');
+      const sekundy = String(teraz.getSeconds()).padStart(2, '0');
+      const zegarTxt = `${godziny}:${minuty}:${sekundy}`;
+      const zegarEl = document.getElementById("zegar");
+      if (zegarEl) zegarEl.textContent = zegarTxt;
+    }, 1000);
+
+    
+    const dataEl = document.getElementById("data");
+    if (dataEl) dataEl.textContent = new Date().toLocaleDateString();
+
+    
+    if (!sessionStorage.getItem("visited")) {
+      let licznik = localStorage.getItem("licznik") || 0;
+      licznik = parseInt(licznik) + 1;
+      localStorage.setItem("licznik", licznik);
+      sessionStorage.setItem("visited", "true");
+    }
+    const licznikEl = document.getElementById("licznik");
+    if (licznikEl) licznikEl.textContent = localStorage.getItem("licznik");
+
+    
+    let czasStart = sessionStorage.getItem("czasStart");
+    if (!czasStart) {
+      czasStart = Date.now();
+      sessionStorage.setItem("czasStart", czasStart);
+    }
+    setInterval(() => {
+      const elapsed = Date.now() - sessionStorage.getItem("czasStart");
+      const sekundy = Math.floor(elapsed / 1000);
+      const czasEl = document.getElementById("czasNaStronie");
+      if (czasEl) czasEl.textContent = sekundy + " sekundy";
+    }, 1000);
+  </script>
+</body>
+</html>
